@@ -1,0 +1,24 @@
+# Secrets and private configuration
+.env
+.env.*
+config/database.php
+config/database.local.php
+!config/database.example.php
+
+# Logs and OS/editor files
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Dependencies and generated/private files
+vendor/
+node_modules/
+tmp/
+temp/
+cache/
+uploads/private/
+
+# Local PDF inspection and scratch files
+/work/
