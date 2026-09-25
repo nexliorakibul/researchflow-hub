@@ -40,6 +40,8 @@ function get_database_connection(): PDO
     $username = (string) $config['username'];
     $password = (string) $config['password'];
     $charset = (string) $config['charset'];
+    $sslCa = (string) ($config['ssl_ca'] ?? '');
+    $sslVerifyServerCert = (bool) ($config['ssl_verify_server_cert'] ?? false);
 
     if (!preg_match('/\A[a-zA-Z0-9.-]+\z/', $host)) {
         throw new RuntimeException('Database host is invalid.');
@@ -65,15 +67,29 @@ function get_database_connection(): PDO
         $charset
     );
 
-    try {
-        $connection = new PDO($dsn, $username, $password, [
+    $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_STRINGIFY_FETCHES => false,
             PDO::ATTR_PERSISTENT => false,
             PDO::ATTR_TIMEOUT => 5,
-        ]);
+    ];
+
+    if ($sslCa !== '') {
+        if (!defined('PDO::MYSQL_ATTR_SSL_CA') || !is_file($sslCa)) {
+            throw new RuntimeException('Database TLS configuration is invalid.');
+        }
+
+        $options[PDO::MYSQL_ATTR_SSL_CA] = $sslCa;
+
+        if (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) {
+            $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = $sslVerifyServerCert;
+        }
+    }
+
+    try {
+        $connection = new PDO($dsn, $username, $password, $options);
     } catch (PDOException $exception) {
         error_log('Database connection failed with PDO code: ' . $exception->getCode());
         throw new RuntimeException('Database connection failed.');

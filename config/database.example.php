@@ -9,4 +9,9 @@ return [
     'username' => getenv('RFH_DB_USER') ?: 'root',
     'password' => getenv('RFH_DB_PASSWORD') ?: '',
     'charset' => 'utf8mb4',
+    'ssl_ca' => getenv('RFH_DB_SSL_CA') ?: '',
+    'ssl_verify_server_cert' => filter_var(
+        getenv('RFH_DB_SSL_VERIFY') ?: false,
+        FILTER_VALIDATE_BOOLEAN
+    ),
 ];
