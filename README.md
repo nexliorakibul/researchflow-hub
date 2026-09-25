@@ -62,6 +62,7 @@ Database references:
 - [End-to-End Testing and QA](docs/testing-qa.md)
 - [Project Report and Screenshot Evidence](docs/project-report.md)
 - [Git Delivery Status](docs/git-delivery.md)
+- [Live Deployment](docs/deployment.md)
 
 ## Repository structure
 

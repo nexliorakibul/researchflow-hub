@@ -36,6 +36,13 @@ require_once BASE_PATH . '/includes/auth.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== '' && $_SERVER['HTTPS'] !== 'off';
+    $trustProxy = (bool) (APP_CONFIG['trust_proxy'] ?? false);
+
+    if (!$isHttps && $trustProxy) {
+        $forwardedProto = strtolower(trim(explode(',', (string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''))[0]));
+        $isHttps = $forwardedProto === 'https';
+    }
+
     $sessionPath = (string) (APP_CONFIG['session_path'] ?? '');
 
     if ($sessionPath !== '') {

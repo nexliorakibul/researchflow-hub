@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: researchflow-hub
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    autoDeployTrigger: commit
+    envVars:
+      - key: RFH_APP_ENV
+        value: production
+      - key: RFH_TIMEZONE
+        value: Asia/Dhaka
+      - key: RFH_TRUST_PROXY
+        value: "true"
+      - key: RFH_DB_HOST
+        sync: false
+      - key: RFH_DB_PORT
+        value: "4000"
+      - key: RFH_DB_NAME
+        value: researchflow_db
+      - key: RFH_DB_USER
+        sync: false
+      - key: RFH_DB_PASSWORD
+        sync: false
+      - key: RFH_DB_SSL_CA
+        value: /etc/ssl/certs/ca-certificates.crt
+      - key: RFH_DB_SSL_VERIFY
+        value: "true"
