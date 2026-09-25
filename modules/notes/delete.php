@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/_common.php';
+
+[$userId, $connection, $user] = note_page_context();
+try {
+    require_valid_csrf_token();
+} catch (RuntimeException $exception) {
+    if (!is_post_request()) {
+        header('Allow: POST');
+        render_http_error(405);
+    }
+    render_http_error(403);
+}
+
+$noteId = note_request_id('post');
+$statement = $connection->prepare('DELETE FROM notes WHERE id = :id AND user_id = :user_id');
+$statement->execute(['id' => $noteId, 'user_id' => $userId]);
+if ($statement->rowCount() !== 1) {
+    render_note_not_found($user);
+}
+
+flash_message('success', 'Research note deleted successfully.');
+redirect(app_url('modules/notes/index.php'));

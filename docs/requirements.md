@@ -103,30 +103,30 @@ The PDF inconsistently describes experiment charts and favorites as bonuses whil
 
 Unchecked boxes track future implementation and verification; they do not mean the scope document is incomplete.
 
-- [ ] Authentication: registration, login, logout, and protected user sessions.
-- [ ] Dashboard.
-- [ ] Research Projects.
-- [ ] General Research Resources.
-- [ ] Research Papers.
-- [ ] Dataset Manager.
-- [ ] Literature Reviews.
-- [ ] Literature Review Matrix.
-- [ ] Research Gaps.
-- [ ] Research Gap Dashboard / Statistics.
-- [ ] Experiments.
-- [ ] Experiment Comparison.
-- [ ] Research Tasks.
-- [ ] Research Notes.
-- [ ] Citation Generator: IEEE, APA, and Harvard.
-- [ ] Global Search.
-- [ ] Filters.
-- [ ] Sorting.
-- [ ] Pagination.
-- [ ] User Profile.
-- [ ] Password Change.
-- [ ] Responsive Design: desktop, tablet, and mobile.
-- [ ] Security: password hashing, prepared statements, CSRF protection, XSS/output escaping, authentication checks, user ownership checks, server-side validation, and POST-only destructive actions.
-- [ ] Error handling: 403, 404, 500, flash messages, empty states, and confirmation dialogs.
+- [x] Authentication: registration, login, logout, and protected user sessions.
+- [x] Dashboard.
+- [x] Research Projects.
+- [x] General Research Resources.
+- [x] Research Papers.
+- [x] Dataset Manager.
+- [x] Literature Reviews.
+- [x] Literature Review Matrix.
+- [x] Research Gaps.
+- [x] Research Gap Dashboard / Statistics.
+- [x] Experiments.
+- [x] Experiment Comparison.
+- [x] Research Tasks.
+- [x] Research Notes.
+- [x] Citation Generator: IEEE, APA, and Harvard.
+- [x] Global Search.
+- [x] Filters.
+- [x] Sorting.
+- [x] Pagination.
+- [x] User Profile.
+- [x] Password Change.
+- [x] Responsive Design: desktop, tablet, and mobile.
+- [x] Security: password hashing, prepared statements, CSRF protection, XSS/output escaping, authentication checks, user ownership checks, server-side validation, and POST-only destructive actions.
+- [x] Error handling: 403, 404, 500, flash messages, empty states, and confirmation dialogs.
 
 ## Step 1 checkpoint
 
