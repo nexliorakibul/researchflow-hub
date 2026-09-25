@@ -2,9 +2,11 @@
 
 An integrated research workspace for organizing projects, academic resources, papers, datasets, literature reviews, research gaps, experiments, tasks, notes, and citations.
 
+Repository: <https://github.com/nexliorakibul/researchflow-hub>
+
 ## Current status
 
-Steps 1-31 complete the Version 1 scope, implementation, security hardening, end-to-end QA, report, and screenshot evidence. Step 33 prepares the completed project for Git delivery. A GitHub remote and live deployment URL are not configured yet.
+Steps 1-31 complete the Version 1 scope, implementation, security hardening, end-to-end QA, report, and screenshot evidence. Step 33 publishes the completed project to its public GitHub repository. A live deployment URL is not configured yet.
 
 ## Planned technology stack
 
