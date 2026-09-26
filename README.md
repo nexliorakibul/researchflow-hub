@@ -6,7 +6,9 @@ Repository: <https://github.com/nexliorakibul/researchflow-hub>
 
 ## Current status
 
-Steps 1-31 complete the Version 1 scope, implementation, security hardening, end-to-end QA, report, and screenshot evidence. Step 33 publishes the completed project to its public GitHub repository. A live deployment URL is not configured yet.
+Steps 1-34 complete the Version 1 scope, implementation, security hardening, end-to-end QA, report, screenshot evidence, public GitHub delivery, and live deployment.
+
+Live site: <https://researchflow-hub.onrender.com>
 
 ## Planned technology stack
 

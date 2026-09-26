@@ -1,12 +1,12 @@
 # Project Report and Screenshot Evidence
 
-Checked: 2026-09-25. **Step 31 status: PASS.**
+Checked: 2026-09-26. **Step 34 report update status: PASS.**
 
 ## Report
 
 - Final editable report: `outputs/ResearchFlow-Hub-Project-Report.docx`
 - The report follows the required 10-page order: cover, introduction, objectives and scope, architecture, database design, features, advanced features, validation and security, testing and timeline, and reflection with Harvard references.
-- The verified public GitHub repository is included. Unknown student, university, and deployment details remain clearly marked instead of being invented.
+- The verified public GitHub repository and live website URL are included. Unknown student and university details remain clearly marked instead of being invented.
 - The final render was verified as exactly 10 pages with no clipped or overflowing content.
 
 ## Screenshot evidence
