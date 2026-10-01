@@ -45,3 +45,7 @@ Reading statuses are To Read, Reading, Reviewed, Completed, and Important.
 - [x] Paper navigation is enabled globally, on the dashboard, and in project workspaces.
 - [x] Citation metadata is stored without inventing missing values.
 - [x] Literature reviews and research gaps are linked, and citation generation is implemented in Step 22.
+
+## Version 2 additions
+
+The Version 2 scholarly metadata workflow adds Crossref DOI preview/import, OpenAlex discovery/import, normalized duplicate detection, and BibTeX/RIS downloads. See [`docs/version-2.md`](version-2.md) for configuration, security behavior, and acceptance criteria.

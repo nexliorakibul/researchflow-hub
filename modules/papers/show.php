@@ -53,6 +53,8 @@ render_app_feedback();
     </div>
     <div class="hero-actions">
         <?php if ($paper['url']): ?><a class="primary-button" href="<?= e($paper['url']) ?>" target="_blank" rel="noopener noreferrer">Open paper</a><?php endif; ?>
+        <a class="secondary-button" href="<?= e(app_url('modules/papers/export.php?format=bibtex&id=' . $paperId)) ?>">BibTeX</a>
+        <a class="secondary-button" href="<?= e(app_url('modules/papers/export.php?format=ris&id=' . $paperId)) ?>">RIS</a>
         <a class="secondary-button" href="<?= e(app_url('modules/papers/edit.php?id=' . $paperId)) ?>">Edit</a>
         <form method="post" action="<?= e(app_url('modules/papers/delete.php')) ?>" data-confirm="Delete this research paper? Linked literature reviews will also be deleted. This cannot be undone.">
             <?= csrf_input() ?><input type="hidden" name="id" value="<?= e($paperId) ?>"><button class="danger-button" type="submit">Delete</button>

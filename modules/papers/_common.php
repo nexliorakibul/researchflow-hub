@@ -94,7 +94,7 @@ function paper_form_values(array $source): array
         'volume' => trim(input_string($source, 'volume')),
         'issue' => trim(input_string($source, 'issue')),
         'pages' => trim(input_string($source, 'pages')),
-        'doi' => trim(input_string($source, 'doi')),
+        'doi' => normalize_doi(input_string($source, 'doi')),
         'url' => trim(input_string($source, 'url')),
         'research_area' => trim(input_string($source, 'research_area')),
         'keywords' => trim(input_string($source, 'keywords')),
@@ -104,7 +104,69 @@ function paper_form_values(array $source): array
     ];
 }
 
-function validate_paper_values(array $values, PDO $connection, int $userId): array
+function normalize_paper_title(string $title): string
+{
+    $title = trim(preg_replace('/\s+/u', ' ', $title) ?? $title);
+
+    return function_exists('mb_strtolower')
+        ? mb_strtolower($title, 'UTF-8')
+        : strtolower($title);
+}
+
+function find_duplicate_paper(
+    PDO $connection,
+    int $userId,
+    array $values,
+    int $ignorePaperId = 0
+): ?array {
+    $query = 'SELECT id, title, doi, publication_year FROM papers WHERE user_id = :user_id';
+    $parameters = ['user_id' => $userId];
+    if ($ignorePaperId > 0) {
+        $query .= ' AND id <> :ignore_id';
+        $parameters['ignore_id'] = $ignorePaperId;
+    }
+
+    $doi = normalize_doi((string) ($values['doi'] ?? ''));
+    if ($doi !== '') {
+        $statement = $connection->prepare($query . " AND doi IS NOT NULL AND doi <> ''");
+        $statement->execute($parameters);
+        foreach ($statement->fetchAll() as $candidate) {
+            if (normalize_doi((string) ($candidate['doi'] ?? '')) === $doi) {
+                return $candidate;
+            }
+        }
+    }
+
+    $title = normalize_paper_title((string) ($values['title'] ?? ''));
+    if ($title === '') {
+        return null;
+    }
+
+    $year = (string) ($values['publication_year'] ?? '');
+    if ($year !== '') {
+        $query .= ' AND publication_year = :publication_year';
+        $parameters['publication_year'] = (int) $year;
+    } else {
+        $query .= ' AND publication_year IS NULL';
+    }
+
+    $statement = $connection->prepare($query);
+    $statement->execute($parameters);
+    foreach ($statement->fetchAll() as $candidate) {
+        if (normalize_paper_title((string) ($candidate['title'] ?? '')) === $title) {
+            return $candidate;
+        }
+    }
+
+    return null;
+}
+
+function validate_paper_values(
+    array $values,
+    PDO $connection,
+    int $userId,
+    int $ignorePaperId = 0
+): array
 {
     $errors = [];
 
@@ -127,6 +189,10 @@ function validate_paper_values(array $values, PDO $connection, int $userId): arr
         if ($values[$field] !== '' && !string_length_between($values[$field], 1, $maximum)) {
             $errors[] = $label . ' must not exceed ' . $maximum . ' characters.';
         }
+    }
+
+    if ($values['doi'] !== '' && !valid_doi($values['doi'])) {
+        $errors[] = 'DOI must use a valid format such as 10.1000/example.';
     }
 
     if (!in_array($values['reading_status'], PAPER_READING_STATUSES, true)) {
@@ -159,7 +225,49 @@ function validate_paper_values(array $values, PDO $connection, int $userId): arr
         }
     }
 
+
+    if ($values['title'] !== '') {
+        $duplicate = find_duplicate_paper($connection, $userId, $values, $ignorePaperId);
+        if ($duplicate !== null) {
+            $errors[] = 'This paper is already in your library: ' . (string) $duplicate['title'] . '.';
+        }
+    }
+
     return $errors;
+}
+
+function create_owned_paper(PDO $connection, int $userId, array $values): int
+{
+    $statement = $connection->prepare(
+        'INSERT INTO papers
+            (user_id, project_id, title, authors, publication_year, venue,
+             volume, issue, pages, doi, url, research_area, keywords,
+             summary, reading_status, personal_notes)
+         VALUES
+            (:user_id, :project_id, :title, :authors, :publication_year, :venue,
+             :volume, :issue, :pages, :doi, :url, :research_area, :keywords,
+             :summary, :reading_status, :personal_notes)'
+    );
+    $statement->execute([
+        'user_id' => $userId,
+        'project_id' => $values['project_id'] !== '' ? (int) $values['project_id'] : null,
+        'title' => $values['title'],
+        'authors' => $values['authors'] !== '' ? $values['authors'] : null,
+        'publication_year' => $values['publication_year'] !== '' ? (int) $values['publication_year'] : null,
+        'venue' => $values['venue'] !== '' ? $values['venue'] : null,
+        'volume' => $values['volume'] !== '' ? $values['volume'] : null,
+        'issue' => $values['issue'] !== '' ? $values['issue'] : null,
+        'pages' => $values['pages'] !== '' ? $values['pages'] : null,
+        'doi' => $values['doi'] !== '' ? normalize_doi($values['doi']) : null,
+        'url' => $values['url'] !== '' ? $values['url'] : null,
+        'research_area' => $values['research_area'] !== '' ? $values['research_area'] : null,
+        'keywords' => $values['keywords'] !== '' ? $values['keywords'] : null,
+        'summary' => $values['summary'] !== '' ? $values['summary'] : null,
+        'reading_status' => $values['reading_status'],
+        'personal_notes' => $values['personal_notes'] !== '' ? $values['personal_notes'] : null,
+    ]);
+
+    return (int) $connection->lastInsertId();
 }
 
 function render_paper_errors(array $errors): void

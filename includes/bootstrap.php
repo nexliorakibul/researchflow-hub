@@ -31,6 +31,7 @@ register_application_error_handlers();
 require_once BASE_PATH . '/includes/security.php';
 require_once BASE_PATH . '/includes/csrf.php';
 require_once BASE_PATH . '/includes/validation.php';
+require_once BASE_PATH . '/includes/scholarly-apis.php';
 require_once BASE_PATH . '/includes/database.php';
 require_once BASE_PATH . '/includes/auth.php';
 

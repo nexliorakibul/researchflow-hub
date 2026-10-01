@@ -6,7 +6,7 @@ Repository: <https://github.com/nexliorakibul/researchflow-hub>
 
 ## Current status
 
-Steps 1-34 complete the Version 1 scope, implementation, security hardening, end-to-end QA, report, screenshot evidence, public GitHub delivery, and live deployment.
+Version 1 is complete and deployed. Version 2 adds Crossref DOI import, OpenAlex paper discovery, duplicate-paper prevention, and BibTeX/RIS exports while preserving the Version 1 workflow.
 
 Live site: <https://researchflow-hub.onrender.com>
 
@@ -29,6 +29,16 @@ The only main role is **Researcher / User**; users manage only their own records
 - Global search, filters, sorting, and pagination.
 - Desktop, tablet, and mobile layouts.
 - Security, validation, error pages, flash messages, empty states, and confirmation dialogs.
+
+## Version 2 additions
+
+- Crossref DOI metadata lookup, preview, and import.
+- OpenAlex scholarly paper search and selected-result import.
+- Per-user duplicate detection using normalized DOI or title and publication year.
+- Single-paper and full-library BibTeX/RIS downloads.
+- Allowlisted HTTPS API access, timeouts, response limits, caching, and safe error messages.
+
+See [Version 2 implementation and configuration](docs/version-2.md).
 
 See [the complete requirements](docs/requirements.md) for scope and acceptance criteria.
 

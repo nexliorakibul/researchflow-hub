@@ -25,7 +25,7 @@ if (is_post_request()) {
         $errors[] = 'Your form session expired. Please try again.';
     }
 
-    $errors = array_merge($errors, validate_paper_values($values, $connection, $userId));
+    $errors = array_merge($errors, validate_paper_values($values, $connection, $userId, $paperId));
 
     if ($errors === []) {
         $statement = $connection->prepare(
@@ -46,7 +46,7 @@ if (is_post_request()) {
             'volume' => $values['volume'] !== '' ? $values['volume'] : null,
             'issue' => $values['issue'] !== '' ? $values['issue'] : null,
             'pages' => $values['pages'] !== '' ? $values['pages'] : null,
-            'doi' => $values['doi'] !== '' ? $values['doi'] : null,
+            'doi' => $values['doi'] !== '' ? normalize_doi($values['doi']) : null,
             'url' => $values['url'] !== '' ? $values['url'] : null,
             'research_area' => $values['research_area'] !== '' ? $values['research_area'] : null,
             'keywords' => $values['keywords'] !== '' ? $values['keywords'] : null,

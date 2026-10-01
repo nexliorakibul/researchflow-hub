@@ -138,8 +138,18 @@ render_app_feedback();
 ?>
 <section class="page-heading">
     <div><p class="page-kicker">Research library</p><h2>Research papers</h2><p>Organize paper metadata, reading progress, summaries, and notes.</p></div>
-    <a class="primary-button" href="<?= e(app_url('modules/papers/create.php')) ?>">Add paper</a>
+    <div class="hero-actions paper-action-group">
+        <a class="secondary-button" href="<?= e(app_url('modules/papers/discover.php')) ?>">Discover</a>
+        <a class="secondary-button" href="<?= e(app_url('modules/papers/import-doi.php')) ?>">Import DOI</a>
+        <a class="primary-button" href="<?= e(app_url('modules/papers/create.php')) ?>">Add paper</a>
+    </div>
 </section>
+
+<div class="export-toolbar" aria-label="Paper export options">
+    <span>Export library:</span>
+    <a href="<?= e(app_url('modules/papers/export.php?format=bibtex')) ?>">BibTeX</a>
+    <a href="<?= e(app_url('modules/papers/export.php?format=ris')) ?>">RIS</a>
+</div>
 
 <form class="filter-bar paper-filter-bar" method="get" action="<?= e(app_url('modules/papers/index.php')) ?>">
     <div class="filter-field filter-search">
