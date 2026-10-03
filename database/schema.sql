@@ -16,9 +16,11 @@ CREATE TABLE IF NOT EXISTS users (
     institution VARCHAR(150) NULL,
     research_interests TEXT NULL,
     bio TEXT NULL,
+    orcid_id VARCHAR(19) NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT uq_users_email UNIQUE (email),
+    CONSTRAINT uq_users_orcid_id UNIQUE (orcid_id),
     CONSTRAINT chk_users_name_length CHECK (CHAR_LENGTH(name) BETWEEN 2 AND 100)
 ) ENGINE=InnoDB;
 
@@ -92,6 +94,7 @@ CREATE TABLE IF NOT EXISTS papers (
     pages VARCHAR(50) NULL,
     doi VARCHAR(255) NULL,
     url VARCHAR(1000) NULL,
+    code_url VARCHAR(1000) NULL,
     research_area VARCHAR(150) NULL,
     keywords VARCHAR(1000) NULL,
     summary TEXT NULL,

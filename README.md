@@ -6,7 +6,7 @@ Repository: <https://github.com/nexliorakibul/researchflow-hub>
 
 ## Current status
 
-Version 1 is complete and deployed. Version 2 adds Crossref DOI import, OpenAlex paper discovery, duplicate-paper prevention, and BibTeX/RIS exports while preserving the Version 1 workflow.
+Version 1 and Version 2 are complete and deployed. Version 3 adds scholarly impact insights, open-access discovery, direct code links, DataCite dataset import, and optional authenticated ORCID connection/sign-in.
 
 Live site: <https://researchflow-hub.onrender.com>
 
@@ -39,6 +39,17 @@ The only main role is **Researcher / User**; users manage only their own records
 - Allowlisted HTTPS API access, timeouts, response limits, caching, and safe error messages.
 
 See [Version 2 implementation and configuration](docs/version-2.md).
+
+## Version 3 additions
+
+- Semantic Scholar citation counts, references, citing papers, and related-paper recommendations.
+- Open-access PDF discovery through Unpaywall with Semantic Scholar fallback.
+- Saved code-repository links and GitHub code discovery for papers.
+- DataCite public dataset search, duplicate prevention, and metadata import.
+- Optional authenticated ORCID connection and sign-in using OAuth 2.0.
+- A documented one-time database upgrade path for existing installations.
+
+See [Version 3 implementation, migration, and configuration](docs/version-3.md).
 
 See [the complete requirements](docs/requirements.md) for scope and acceptance criteria.
 

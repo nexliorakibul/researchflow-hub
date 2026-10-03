@@ -223,6 +223,7 @@ render_app_feedback();
                         <td><span class="status-badge status-<?= e(str_replace('_', '-', $paper['reading_status'])) ?>"><?= e(paper_label($paper['reading_status'])) ?></span></td>
                         <td><div class="table-actions">
                             <a href="<?= e(app_url('modules/papers/show.php?id=' . $paper['id'])) ?>">View</a>
+                            <a href="<?= e(app_url('modules/papers/insights.php?id=' . $paper['id'])) ?>">Insights</a>
                             <a href="<?= e(app_url('modules/papers/edit.php?id=' . $paper['id'])) ?>">Edit</a>
                             <form method="post" action="<?= e(app_url('modules/papers/delete.php')) ?>" data-confirm="Delete this research paper? Linked literature reviews will also be deleted. This cannot be undone.">
                                 <?= csrf_input() ?><input type="hidden" name="id" value="<?= e($paper['id']) ?>"><button type="submit">Delete</button>

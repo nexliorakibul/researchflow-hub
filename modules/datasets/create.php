@@ -19,18 +19,7 @@ if (is_post_request()) {
     $errors = array_merge($errors, validate_dataset_values($values, $connection, $userId));
 
     if ($errors === []) {
-        $statement = $connection->prepare(
-            'INSERT INTO datasets
-                (user_id, project_id, name, domain, source, url, row_count,
-                 column_count, image_count, class_count, file_size, license,
-                 access_type, description, status, notes)
-             VALUES
-                (:user_id, :project_id, :name, :domain, :source, :url, :row_count,
-                 :column_count, :image_count, :class_count, :file_size, :license,
-                 :access_type, :description, :status, :notes)'
-        );
-        $statement->execute(dataset_database_values($values, $userId));
-        $datasetId = (int) $connection->lastInsertId();
+        $datasetId = create_owned_dataset($connection, $userId, $values);
         flash_message('success', 'Dataset added successfully.');
         redirect(app_url('modules/datasets/show.php?id=' . $datasetId));
     }

@@ -123,7 +123,7 @@ render_app_feedback();
 ?>
 <section class="page-heading">
     <div><p class="page-kicker">Research library</p><h2>Dataset manager</h2><p>Track dataset metadata, access, licensing, size, and preparation status.</p></div>
-    <a class="primary-button" href="<?= e(app_url('modules/datasets/create.php')) ?>">Add dataset</a>
+    <div class="hero-actions"><a class="secondary-button" href="<?= e(app_url('modules/datasets/discover.php')) ?>">Search DataCite</a><a class="primary-button" href="<?= e(app_url('modules/datasets/create.php')) ?>">Add dataset</a></div>
 </section>
 
 <form class="filter-bar dataset-filter-bar" method="get" action="<?= e(app_url('modules/datasets/index.php')) ?>">

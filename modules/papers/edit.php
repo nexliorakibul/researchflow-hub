@@ -33,6 +33,7 @@ if (is_post_request()) {
                 project_id = :project_id, title = :title, authors = :authors,
                 publication_year = :publication_year, venue = :venue, volume = :volume,
                 issue = :issue, pages = :pages, doi = :doi, url = :url,
+                code_url = :code_url,
                 research_area = :research_area, keywords = :keywords, summary = :summary,
                 reading_status = :reading_status, personal_notes = :personal_notes
              WHERE id = :id AND user_id = :user_id'
@@ -48,6 +49,7 @@ if (is_post_request()) {
             'pages' => $values['pages'] !== '' ? $values['pages'] : null,
             'doi' => $values['doi'] !== '' ? normalize_doi($values['doi']) : null,
             'url' => $values['url'] !== '' ? $values['url'] : null,
+            'code_url' => $values['code_url'] !== '' ? $values['code_url'] : null,
             'research_area' => $values['research_area'] !== '' ? $values['research_area'] : null,
             'keywords' => $values['keywords'] !== '' ? $values['keywords'] : null,
             'summary' => $values['summary'] !== '' ? $values['summary'] : null,

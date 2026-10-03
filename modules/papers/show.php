@@ -53,6 +53,8 @@ render_app_feedback();
     </div>
     <div class="hero-actions">
         <?php if ($paper['url']): ?><a class="primary-button" href="<?= e($paper['url']) ?>" target="_blank" rel="noopener noreferrer">Open paper</a><?php endif; ?>
+        <?php if ($paper['code_url']): ?><a class="secondary-button" href="<?= e($paper['code_url']) ?>" target="_blank" rel="noopener noreferrer">Open code</a><?php endif; ?>
+        <a class="secondary-button" href="<?= e(app_url('modules/papers/insights.php?id=' . $paperId)) ?>">Scholarly insights</a>
         <a class="secondary-button" href="<?= e(app_url('modules/papers/export.php?format=bibtex&id=' . $paperId)) ?>">BibTeX</a>
         <a class="secondary-button" href="<?= e(app_url('modules/papers/export.php?format=ris&id=' . $paperId)) ?>">RIS</a>
         <a class="secondary-button" href="<?= e(app_url('modules/papers/edit.php?id=' . $paperId)) ?>">Edit</a>
@@ -74,6 +76,7 @@ render_app_feedback();
             <div><dt>Issue</dt><dd><?= e($paper['issue'] ?: 'Not set') ?></dd></div>
             <div><dt>Pages</dt><dd><?= e($paper['pages'] ?: 'Not set') ?></dd></div>
             <div><dt>DOI</dt><dd><?= e($paper['doi'] ?: 'Not set') ?></dd></div>
+            <div><dt>Code repository</dt><dd><?php if ($paper['code_url']): ?><a href="<?= e($paper['code_url']) ?>" target="_blank" rel="noopener noreferrer">Open repository</a><?php else: ?>Not set<?php endif; ?></dd></div>
             <div><dt>Reading status</dt><dd><?= e(paper_label($paper['reading_status'])) ?></dd></div>
             <div><dt>Last updated</dt><dd><?= e(paper_date_label($paper['updated_at'])) ?></dd></div>
         </dl>

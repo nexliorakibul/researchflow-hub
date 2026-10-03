@@ -23,7 +23,7 @@ if (is_post_request()) {
     } catch (RuntimeException $exception) {
         $errors[] = 'Your form session expired. Please try again.';
     }
-    $errors = array_merge($errors, validate_dataset_values($values, $connection, $userId));
+    $errors = array_merge($errors, validate_dataset_values($values, $connection, $userId, $datasetId));
 
     if ($errors === []) {
         $statement = $connection->prepare(

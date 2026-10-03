@@ -682,6 +682,20 @@ a.navigation-link:hover,
 .api-result-summary { margin: 0.9rem 0 0; color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
 .import-preview { margin-top: 1rem; overflow: hidden; }
 .import-options { display: grid; grid-template-columns: minmax(10rem, 1fr) minmax(10rem, 1fr) auto auto; align-items: end; gap: 0.75rem; padding: 1rem 1.15rem; border-top: 1px solid var(--border); }
+.insight-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+.open-access-panel,
+.scholarly-section { margin-top: 1rem; overflow: hidden; }
+.open-access-content { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.15rem; }
+.open-access-content p { margin: 0.3rem 0 0; color: var(--muted); }
+.scholarly-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; padding: 1rem; }
+.scholarly-card { display: flex; min-width: 0; flex-direction: column; padding: 1rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface-soft); }
+.scholarly-card-meta { display: flex; justify-content: space-between; gap: 0.7rem; color: var(--muted); font-size: 0.7rem; }
+.scholarly-card h3 { margin: 0.65rem 0 0.35rem; font-size: 0.98rem; line-height: 1.45; }
+.scholarly-card p { margin: 0 0 1rem; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
+.scholarly-card .card-actions { margin-top: auto; }
+.orcid-connect-panel { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1.25rem; padding: 1rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface-soft); }
+.orcid-connect-panel p { margin: 0.25rem 0 0; color: var(--muted); font-size: 0.8rem; }
+.profile-meta a { color: var(--primary); text-decoration: none; }
 .global-search-form { display: grid; grid-template-columns: minmax(15rem, 1fr) minmax(9rem, 12rem) auto; align-items: end; gap: 0.8rem; padding: 1rem; border: 1px solid var(--border); border-radius: 0.85rem; background: var(--surface); box-shadow: var(--shadow); }
 .search-state-panel { margin-top: 1rem; }
 .search-result-list { display: grid; gap: 0.8rem; }
@@ -716,6 +730,7 @@ a.navigation-link:hover,
     .comparison-chart-grid { grid-template-columns: 1fr; }
     .task-filter-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .note-filter-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .insight-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 62rem) {
@@ -785,6 +800,9 @@ a.navigation-link:hover,
     .api-result-badges { justify-content: flex-start; }
     .export-toolbar { align-items: flex-start; justify-content: flex-start; }
     .search-result-meta { flex-wrap: wrap; }
+    .scholarly-card-grid { grid-template-columns: 1fr; }
+    .open-access-content,
+    .orcid-connect-panel { align-items: stretch; flex-direction: column; }
     .gap-chart-wrap { min-height: 20rem; }
     .comparison-chart-wrap { min-height: 18rem; }
     .experiment-notes-panel { grid-column: auto; }

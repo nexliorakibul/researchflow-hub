@@ -79,5 +79,10 @@ render_auth_feedback($errors);
     <button class="button" type="submit">Log in</button>
 </form>
 
+<?php if (orcid_oauth_ready()): ?>
+    <div class="auth-divider"><span>or</span></div>
+    <a class="button button-secondary auth-provider-button" href="<?= e(app_url('orcid-start.php')) ?>">Continue with ORCID</a>
+<?php endif; ?>
+
 <p class="auth-switch">Need an account? <a href="<?= e(app_url('register.php')) ?>">Register</a></p>
 <?php render_auth_page_end(); ?>

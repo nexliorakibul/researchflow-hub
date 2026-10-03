@@ -10,7 +10,7 @@ $connection = get_database_connection();
 
 $loadUser = static function (PDO $connection, int $userId): array {
     $statement = $connection->prepare(
-        'SELECT id, name, email, institution, research_interests, bio, created_at, updated_at
+        'SELECT id, name, email, institution, research_interests, bio, orcid_id, created_at, updated_at
          FROM users
          WHERE id = :id
          LIMIT 1'
@@ -143,6 +143,7 @@ render_app_feedback();
         <p><?= e($user['email']) ?></p>
         <dl class="profile-meta">
             <div><dt>Institution</dt><dd><?= e($user['institution'] ?: 'Not provided') ?></dd></div>
+            <div><dt>ORCID iD</dt><dd><?php if ($user['orcid_id']): ?><a href="<?= e('https://orcid.org/' . $user['orcid_id']) ?>" target="_blank" rel="noopener noreferrer"><?= e($user['orcid_id']) ?></a><?php else: ?>Not connected<?php endif; ?></dd></div>
             <div><dt>Member since</dt><dd><?= e($joinedDate->format('M j, Y')) ?></dd></div>
             <div><dt>Last updated</dt><dd><?= e($updatedDate->format('M j, Y')) ?></dd></div>
         </dl>
@@ -190,6 +191,16 @@ render_app_feedback();
                 <a class="secondary-button" href="<?= e(app_url('profile.php')) ?>">Cancel changes</a>
             </div>
         </form>
+        <div class="orcid-connect-panel">
+            <div><strong>ORCID researcher identity</strong><p>Connect an authenticated ORCID iD to enable ORCID sign-in.</p></div>
+            <?php if ($user['orcid_id']): ?>
+                <form method="post" action="<?= e(app_url('orcid-disconnect.php')) ?>" data-confirm="Disconnect ORCID from this account?"><?= csrf_input() ?><button class="secondary-button" type="submit">Disconnect ORCID</button></form>
+            <?php elseif (orcid_oauth_ready()): ?>
+                <a class="primary-button" href="<?= e(app_url('orcid-start.php')) ?>">Connect ORCID</a>
+            <?php else: ?>
+                <span class="muted-copy">ORCID OAuth credentials are not configured on this server.</span>
+            <?php endif; ?>
+        </div>
     </section>
 </div>
 <?php render_app_page_end(); ?>

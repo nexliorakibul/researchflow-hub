@@ -42,7 +42,7 @@ function find_owned_paper(PDO $connection, int $paperId, int $userId): ?array
 
     $statement = $connection->prepare(
         'SELECT p.id, p.project_id, p.title, p.authors, p.publication_year,
-                p.venue, p.volume, p.issue, p.pages, p.doi, p.url,
+                p.venue, p.volume, p.issue, p.pages, p.doi, p.url, p.code_url,
                 p.research_area, p.keywords, p.summary, p.reading_status,
                 p.personal_notes, p.created_at, p.updated_at,
                 pr.title AS project_title
@@ -96,6 +96,7 @@ function paper_form_values(array $source): array
         'pages' => trim(input_string($source, 'pages')),
         'doi' => normalize_doi(input_string($source, 'doi')),
         'url' => trim(input_string($source, 'url')),
+        'code_url' => trim(input_string($source, 'code_url')),
         'research_area' => trim(input_string($source, 'research_area')),
         'keywords' => trim(input_string($source, 'keywords')),
         'summary' => trim(input_string($source, 'summary')),
@@ -215,6 +216,14 @@ function validate_paper_values(
         }
     }
 
+    if ($values['code_url'] !== '') {
+        if (!string_length_between($values['code_url'], 1, 1000)) {
+            $errors[] = 'Code repository URL must not exceed 1000 characters.';
+        } elseif (!valid_http_url($values['code_url'])) {
+            $errors[] = 'Code repository URL must be a valid HTTP or HTTPS address.';
+        }
+    }
+
     if ($values['project_id'] !== '') {
         $projectId = filter_var($values['project_id'], FILTER_VALIDATE_INT, [
             'options' => ['min_range' => 1],
@@ -241,11 +250,11 @@ function create_owned_paper(PDO $connection, int $userId, array $values): int
     $statement = $connection->prepare(
         'INSERT INTO papers
             (user_id, project_id, title, authors, publication_year, venue,
-             volume, issue, pages, doi, url, research_area, keywords,
+             volume, issue, pages, doi, url, code_url, research_area, keywords,
              summary, reading_status, personal_notes)
          VALUES
             (:user_id, :project_id, :title, :authors, :publication_year, :venue,
-             :volume, :issue, :pages, :doi, :url, :research_area, :keywords,
+             :volume, :issue, :pages, :doi, :url, :code_url, :research_area, :keywords,
              :summary, :reading_status, :personal_notes)'
     );
     $statement->execute([
@@ -260,6 +269,7 @@ function create_owned_paper(PDO $connection, int $userId, array $values): int
         'pages' => $values['pages'] !== '' ? $values['pages'] : null,
         'doi' => $values['doi'] !== '' ? normalize_doi($values['doi']) : null,
         'url' => $values['url'] !== '' ? $values['url'] : null,
+        'code_url' => $values['code_url'] !== '' ? $values['code_url'] : null,
         'research_area' => $values['research_area'] !== '' ? $values['research_area'] : null,
         'keywords' => $values['keywords'] !== '' ? $values['keywords'] : null,
         'summary' => $values['summary'] !== '' ? $values['summary'] : null,
@@ -341,6 +351,10 @@ function render_paper_form(array $values, array $projects, string $submitLabel):
         <div class="form-field form-field-wide">
             <label for="url">Paper URL</label>
             <input id="url" name="url" type="url" value="<?= e($values['url']) ?>" maxlength="1000" placeholder="https://example.com/paper">
+        </div>
+        <div class="form-field form-field-wide">
+            <label for="code_url">Code repository URL</label>
+            <input id="code_url" name="code_url" type="url" value="<?= e($values['code_url']) ?>" maxlength="1000" placeholder="https://github.com/author/project">
         </div>
         <div class="form-field">
             <label for="research_area">Research area</label>

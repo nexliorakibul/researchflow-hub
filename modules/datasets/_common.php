@@ -117,7 +117,40 @@ function valid_dataset_count(string $value, int $maximum): bool
         ]) !== false;
 }
 
-function validate_dataset_values(array $values, PDO $connection, int $userId): array
+function find_duplicate_dataset(PDO $connection, int $userId, array $values, int $ignoreDatasetId = 0): ?array
+{
+    $query = 'SELECT id, name, url FROM datasets WHERE user_id = :user_id';
+    $parameters = ['user_id' => $userId];
+    if ($ignoreDatasetId > 0) {
+        $query .= ' AND id <> :ignore_id';
+        $parameters['ignore_id'] = $ignoreDatasetId;
+    }
+    $statement = $connection->prepare($query);
+    $statement->execute($parameters);
+    $targetUrl = strtolower(rtrim(trim((string) ($values['url'] ?? '')), '/'));
+    $targetName = function_exists('mb_strtolower')
+        ? mb_strtolower(trim((string) ($values['name'] ?? '')), 'UTF-8')
+        : strtolower(trim((string) ($values['name'] ?? '')));
+    foreach ($statement->fetchAll() as $candidate) {
+        $candidateUrl = strtolower(rtrim(trim((string) ($candidate['url'] ?? '')), '/'));
+        $candidateName = function_exists('mb_strtolower')
+            ? mb_strtolower(trim((string) ($candidate['name'] ?? '')), 'UTF-8')
+            : strtolower(trim((string) ($candidate['name'] ?? '')));
+        if (($targetUrl !== '' && $targetUrl === $candidateUrl)
+            || ($targetName !== '' && $targetName === $candidateName)) {
+            return $candidate;
+        }
+    }
+
+    return null;
+}
+
+function validate_dataset_values(
+    array $values,
+    PDO $connection,
+    int $userId,
+    int $ignoreDatasetId = 0
+): array
 {
     $errors = [];
 
@@ -177,7 +210,31 @@ function validate_dataset_values(array $values, PDO $connection, int $userId): a
         }
     }
 
+    if ($values['name'] !== '') {
+        $duplicate = find_duplicate_dataset($connection, $userId, $values, $ignoreDatasetId);
+        if ($duplicate !== null) {
+            $errors[] = 'This dataset is already in your library: ' . (string) $duplicate['name'] . '.';
+        }
+    }
+
     return $errors;
+}
+
+function create_owned_dataset(PDO $connection, int $userId, array $values): int
+{
+    $statement = $connection->prepare(
+        'INSERT INTO datasets
+            (user_id, project_id, name, domain, source, url, row_count,
+             column_count, image_count, class_count, file_size, license,
+             access_type, description, status, notes)
+         VALUES
+            (:user_id, :project_id, :name, :domain, :source, :url, :row_count,
+             :column_count, :image_count, :class_count, :file_size, :license,
+             :access_type, :description, :status, :notes)'
+    );
+    $statement->execute(dataset_database_values($values, $userId));
+
+    return (int) $connection->lastInsertId();
 }
 
 function dataset_database_values(array $values, int $userId): array
